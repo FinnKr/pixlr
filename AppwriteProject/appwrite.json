@@ -1,0 +1,105 @@
+{
+    "projectId": "pixlr",
+    "projectName": "Pixlr",
+    "collections": [
+        {
+            "$id": "comments",
+            "$read": [
+                "role:member"
+            ],
+            "$write": [],
+            "name": "Comments",
+            "enabled": true,
+            "permission": "collection",
+            "attributes": [
+                {
+                    "key": "content",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 255,
+                    "default": null
+                },
+                {
+                    "key": "post_id",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "user_id",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "posts",
+            "$read": [
+                "role:member"
+            ],
+            "$write": [],
+            "name": "Posts",
+            "enabled": true,
+            "permission": "collection",
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "user_id",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "image_id",
+                    "type": "string",
+                    "status": "available",
+                    "required": true,
+                    "array": false,
+                    "size": 20,
+                    "default": null
+                },
+                {
+                    "key": "likes",
+                    "type": "integer",
+                    "status": "available",
+                    "required": false,
+                    "array": false,
+                    "min": 0,
+                    "max": 9223372036854776000,
+                    "default": 0
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "functions": [
+        {
+            "$id": "create_comment",
+            "name": "Create Comment",
+            "runtime": "python-3.9",
+            "path": "Create Comment",
+            "entrypoint": "src/index.py"
+        }
+    ]
+}

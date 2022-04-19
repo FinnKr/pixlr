@@ -3,11 +3,11 @@
 <button onclick="register()">Register Finn</button>
 <button onclick="createPost()">Create Post</button>
 <button onclick="login()">Login Finnus</button>
+<button onclick="createCommentCall()">Create Comment</button>
 
 <script>
     // Init your Web SDK
     const sdk = new Appwrite();
-
     sdk
         .setEndpoint('https://appwrite.berlin-fn.de/v1') // Your Appwrite Endpoint
         .setProject('pixlr') // Your project ID
@@ -34,28 +34,17 @@
         });
     }
 
-    function getPosts() {
-
-    }
-
-    function createPost() {
+function createCommentCall(){
         let data = {
-            title: "Neuer Post",
-            user_id: "fe",
-            image_id: "geriuh"
+            content: "Neuer Comment",
+            post_id: ""
         }
-
-        const promise = sdk.database.createDocument('posts', 'unique()', data);
+        let promise = sdk.functions.createExecution('create_comment', JSON.stringify(data));
 
         promise.then(function (response) {
             console.log(response); // Success
         }, function (error) {
             console.log(error); // Failure
         });
-    }
-
-    function createComment() {
-
-    }
-
+}
 </script>
