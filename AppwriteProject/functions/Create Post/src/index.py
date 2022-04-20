@@ -1,7 +1,5 @@
 import json
-import io
 from urllib.request import urlopen
-from requests.exceptions import HTTPError
 from appwrite.client import Client
 from appwrite.services.database import Database
 from appwrite.services.storage import Storage
@@ -35,18 +33,28 @@ def main(req, res):
         }
         return res.json(obj)
 
+    try:
+        imageRes = urlopen(image64)
+    except:
+        obj = {
+            "error": "error while decoding image",
+            "statusCode": 500
+        }
+        return res.json(obj)
 
-    imageRes = urlopen(image64)
+    try:
+        with open("image.png", "wb") as f:
+            f.write(imageRes.file.read())
+    except:
+        obj = {
+            "error": "error while writing image file",
+            "statusCode": 500
+        }
+        return res.json(obj)
 
-    #output = io.BytesIO()
-    #output.write(imageRes.file.read())
-
-    #with open("image.png", "wb") as f:
-    #    f.write(imageRes.file.read())
-
-    result = storage.create_file(bucket_id, "unique()", imageRes.file.read())
-
-    if not result:
+    try:
+        result = storage.create_file("post_images", "unique()", "image.png")
+    except:
         obj = {
             "error": "error while creating document",
             "statusCode": 500
@@ -62,9 +70,9 @@ def main(req, res):
         "user_id": user_id
     }
 
-    result = database.create_document(post_collection_id, "unique()", post)
-
-    if not result:
+    try:
+        result = database.create_document(post_collection_id, "unique()", post)
+    except:
         obj = {
             "error": "error while creating document",
             "statusCode": 500

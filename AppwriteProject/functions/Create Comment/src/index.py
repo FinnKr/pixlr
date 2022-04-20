@@ -1,5 +1,4 @@
 import json
-from requests.exceptions import HTTPError
 from appwrite.client import Client
 from appwrite.services.database import Database
 
@@ -46,9 +45,9 @@ def main(req, res):
         "user_id": user_id
     }
 
-    result = database.create_document(comment_collection_id, "unique()", comment)
-
-    if not result:
+    try:
+        result = database.create_document(comment_collection_id, "unique()", comment)
+    except:
         obj = {
             "error": "error while creating document",
             "statusCode": 500
