@@ -1,4 +1,5 @@
 import json
+import uuid
 from urllib.request import urlopen
 from appwrite.client import Client
 from appwrite.services.database import Database
@@ -42,8 +43,10 @@ def main(req, res):
         }
         return res.json(obj)
 
+    file_name = str(uuid.uuid4()) + ".png"
+
     try:
-        with open("image.png", "wb") as f:
+        with open(file_name, "wb") as f:
             f.write(imageRes.file.read())
     except:
         obj = {
@@ -53,7 +56,7 @@ def main(req, res):
         return res.json(obj)
 
     try:
-        result = storage.create_file("post_images", "unique()", "image.png")
+        result = storage.create_file("post_images", "unique()", file_name)
     except:
         obj = {
             "error": "error while creating document",
