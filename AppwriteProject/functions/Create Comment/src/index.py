@@ -1,4 +1,5 @@
 import json
+from requests.exceptions import HTTPError
 from appwrite.client import Client
 from appwrite.services.database import Database
 
@@ -25,23 +26,19 @@ def main(req, res):
 
     if not content or not post_id:
         obj = {
-            "text": {
-                "error": "content and post_id should not be empty"
-            },
-            "status_code": 400
+            "error": "content and post_id should not be empty",
+            "statusCode": 400
         }
         return res.json(obj)
 
-    post = database.get_document(post_collection_id, post_id)
-
-    if not post:
-        return res.json({
-            "errors": [
-                {
-                    "post": "Not found"
-                }
-            ]
-        }, 404)
+    try:
+        post = database.get_document(post_collection_id, post_id)
+    except:
+        obj = {
+            "error": "Post not found",
+            "statusCode": 404
+        }
+        return res.json(obj)
 
     comment = {
         "content": content,
@@ -52,8 +49,11 @@ def main(req, res):
     result = database.create_document(comment_collection_id, "unique()", comment)
 
     if not result:
-        return res.json({
-            "error": "error while creating document"
-        }, 500)
+        obj = {
+            "error": "error while creating document",
+            "statusCode": 500
+        }
+        return res.json(obj)
 
-    return res.json(result, 201)
+    result["statusCode"] = 201
+    return res.json(result)

@@ -34,17 +34,22 @@
         });
     }
 
-function createCommentCall(){
-        let data = {
-            content: "Neuer Comment",
-            post_id: ""
-        }
-        let promise = sdk.functions.createExecution('create_comment', JSON.stringify(data));
+    async function createCommentCall(){
+            let data = {
+                content: "Neuer Comment",
+                post_id: "62601cc56aed752ce47a"
+            }
+            let response;
+            try {
+                response = await sdk.functions.createExecution('create_comment', JSON.stringify(data), false);
+            } catch (err) {
+                console.error(err);
+            }
 
-        promise.then(function (response) {
-            console.log(response); // Success
-        }, function (error) {
-            console.log(error); // Failure
-        });
-}
+            response = JSON.parse(response.stdout);
+            console.log("status: "+ response.statusCode);
+            if (response.statusCode > 299 || response.statusCode < 200) {
+                console.error(response.error);
+            }
+    }
 </script>
