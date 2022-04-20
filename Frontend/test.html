@@ -4,6 +4,7 @@
 <button onclick="createPost()">Create Post</button>
 <button onclick="login()">Login Finnus</button>
 <button onclick="createCommentCall()">Create Comment</button>
+<button onclick="createPostCall()">Create Post</button>
 
 <script>
     // Init your Web SDK
@@ -34,7 +35,7 @@
         });
     }
 
-    async function createCommentCall(){
+    async function createCommentCall() {
             let data = {
                 content: "Neuer Comment",
                 post_id: "62601cc56aed752ce47a"
@@ -51,5 +52,26 @@
             if (response.statusCode > 299 || response.statusCode < 200) {
                 console.error(response.error);
             }
+    }
+
+    async function createPostCall() {
+        let data = {
+            title: "Test Titel",
+            image64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAC8SURBVEhL7ZNBCgMhDEVn4WLAC7jsUTyON/EYHsPj2WCC2DLfOEgpLb5lND5DkqN8mC1Q2QKV/xbknB+VlJKE7gMF9Lq19qic5ynRjkk9FFAmv06EECTa0S4YYwYOKIgxcv7l60S7QFyWyCw1Wf0EsSSY4XsCGhLv/cqAMlDgnBt3bxIo4O4RahHjWqGA/i6GyttC8ZbJWQXVCgX9mE8ima9AAXHLgVZhJGgg02C/GlOCFbZAZQtUfl1QyhMTt+m+oX51bQAAAABJRU5ErkJggg=="
+        }
+
+        let response;
+        try {
+            response = await sdk.functions.createExecution('create_post', JSON.stringify(data), false);
+        } catch (err) {
+            console.error(err);
+        }
+
+        response = JSON.parse(response.stdout);
+        console.log("status: "+ response.statusCode);
+        if (response.statusCode > 299 || response.statusCode < 200) {
+            console.error(response.error);
+        }
+        console.log(response);
     }
 </script>
