@@ -1,4 +1,5 @@
 import json
+import os
 import uuid
 from urllib.request import urlopen
 from appwrite.client import Client
@@ -84,5 +85,10 @@ def main(req, res):
 
 
     result["statusCode"] = 201
+
+    try:
+        os.remove(file_name)
+    except:
+        pass
 
     return res.json(result)
