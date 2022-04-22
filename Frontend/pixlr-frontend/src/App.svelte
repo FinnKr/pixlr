@@ -5,6 +5,7 @@
 	import Login from "./pages/Login.svelte";
 	import Navbar from "./components/Navbar.svelte";
 	import Profile from './pages/Profile.svelte';
+	import CreatePost from './pages/CreatePost.svelte';
 	export let url = '';
 </script>
 
@@ -15,6 +16,7 @@
 		<Route path="about" component="{About}" />
 		<Route path="login" component="{Login}" />
 		<Route path="profile" component="{Profile}" />
+		<Route path="create-post" component="{CreatePost}" />
 	</div>
 </Router>
 
