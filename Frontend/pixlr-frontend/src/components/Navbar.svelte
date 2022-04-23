@@ -1,5 +1,20 @@
 <script lang="ts">
-  import { Link } from "svelte-routing";
+  import { onMount } from "svelte";
+  import { Link, Router } from "svelte-routing";
+  import { sdk } from "../appwrite";
+  import type { Models } from "appwrite";
+
+  export let url: string;
+
+  let account: Models.User<Models.Preferences>;
+  let logged_in: boolean = false;
+
+  onMount(async () => {
+    try {
+      account = await sdk.account.get();
+      logged_in = true;
+    } catch{}
+  });
 </script>
 
 <nav class="navbar" aria-label="main navigation">
@@ -29,17 +44,18 @@
 
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <Link to="/" class="navbar-item">Home</Link>
+      <Link to="/" class="navbar-item {url == '/' ? 'has-text-weight-semibold' : ''}">Home</Link>
 
-      <Link to="/" class="navbar-item">Documentation</Link>
+      <Link to="/" class="navbar-item">News</Link>
 
       <div class="navbar-item has-dropdown is-hoverable">
         <Link to="/" class="navbar-link">More</Link>
 
         <div class="navbar-dropdown">
-          <Link to="/about" class="navbar-item">About</Link>
+          <Link to="/about" class="navbar-item {url == '/about' ? 'has-text-weight-semibold' : ''}">About</Link>
           <Link to="/" class="navbar-item">Donate</Link>
           <hr class="navbar-divider" />
+          <a href="https://github.com/FinnKr/pixlr" class="navbar-item">GitHub Repository</a>
           <Link to="/" class="navbar-item">Report an issue</Link>
         </div>
       </div>
@@ -48,10 +64,19 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <Link to="/" class="button is-success">
-            <strong>Sign up</strong>
-          </Link>
-          <Link to="/login" class="button is-light">Log in</Link>
+          {#if logged_in}
+            {#if url != '/create-post'}
+              <Link to="/create-post" class="button is-success">
+                <strong>Create Post</strong>
+              </Link>
+            {/if}
+            <Link to="/profile" class="button is-rounded has-text-weight-semibold  {url == '/profile' ? 'is-active' : ''}">{account.name.substring(0,1)}</Link>
+          {:else}
+            <Link to="/" class="button is-success">
+              <strong>Sign up</strong>
+            </Link>
+            <Link to="/login" class="button is-light  {url == '/login' ? 'has-text-weight-semibold' : ''}">Log in</Link>
+          {/if}
         </div>
       </div>
     </div>

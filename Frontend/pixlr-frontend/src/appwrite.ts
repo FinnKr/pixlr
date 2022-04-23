@@ -5,6 +5,10 @@ const collections = {
     comments: "comments",
 };
 
+const buckets = {
+    post_images: "post_images"
+};
+
 const sdk = new Appwrite();
 
 sdk
@@ -12,4 +16,4 @@ sdk
     .setProject('pixlr')
 ;
 
-export { sdk, collections };
+export { sdk, collections, buckets };

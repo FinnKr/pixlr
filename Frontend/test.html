@@ -5,8 +5,67 @@
 <button onclick="login()">Login Finnus</button>
 <button onclick="createCommentCall()">Create Comment</button>
 <button onclick="createPostCall()">Create Post</button>
+<button onclick="printBase64Img()">Print base64 string</button>
+
+<div style="border: 2px solid black;margin:auto;margin-top:20px;max-width: fit-content;">
+    <canvas onmousemove="drawPixel(event)" id="drawCanvas" width="320px" height="320px" onmousedown="editorMouseDown()">
+    </canvas>
+</div>
+
+<div style="visibility: hidden;">
+    <canvas id="hiddenCanvas" width="32px" height="32px">
+</div>
 
 <script>
+    let mouseOnCanvasDown = false;
+
+    let canvasEl = document.getElementById("drawCanvas");
+    let context = canvasEl.getContext("2d");
+
+    let hCanvasEl = document.getElementById("hiddenCanvas");
+    let hContext = hCanvasEl.getContext("2d");
+
+    function getMousePos(canvas, evt){
+        let rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
+
+    let last_pixel = {x:-1,y:-1};
+
+    function drawPixel(evt) {
+        if (mouseOnCanvasDown){
+            let pos = getMousePos(canvasEl, evt);
+            let pixel = {
+                x: pos.x == 0 ? 0 : Math.ceil(pos.x/10-1),
+                y: pos.y == 0 ? 0 : Math.ceil(pos.y/10-1)
+            }
+            if (last_pixel.x != pixel.x && last_pixel.y != pixel.y){
+                context.fillStyle = "#000000";
+                context.fillRect(pixel.x*10, pixel.y*10, 10, 10);
+
+                hContext.fillStyle = "#000000";
+                hContext.fillRect(pixel.x,pixel.y,1,1);
+            }
+        }
+    }
+
+    function printBase64Img() {
+        console.log(hCanvasEl.toDataURL());
+    }
+
+    function editorMouseDown() {
+        mouseOnCanvasDown  = true;
+    }
+
+    function mouseGlobalUp() {
+        mouseOnCanvasDown = false;
+    }
+
+    document.addEventListener('mouseup', mouseGlobalUp);
+
     // Init your Web SDK
     const sdk = new Appwrite();
     sdk
