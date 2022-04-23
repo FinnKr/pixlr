@@ -33,7 +33,7 @@ def main(req, res):
 
 
 
-    # Check if like already exists
+    # Check if post is liked
     try:
         result = database.list_documents(like_collection_id,[Query.equal('user_id', user_id), Query.equal('post_id', post_id)])
     except:
@@ -43,13 +43,16 @@ def main(req, res):
         }
         return res.json(obj)
 
-    if result["total"] > 0:
+    if result["total"] == 0:
         obj = {
-            "error": "post is already liked",
+            "error": "post is not liked",
             "statusCode": 400
         }
         return res.json(obj)
 
+    like_id = result["documents"][0]["$id"]
+
+    """
     # verify that the post exists
     try:
         post = database.get_document(post_collection_id, post_id)
@@ -59,22 +62,19 @@ def main(req, res):
             "statusCode": 400
         }
         return res.json(obj)
-
-    
-    like = {
-        "user_id": user_id,
-        "post_id": post_id
-    }
+    """
 
     try:
-        result = database.create_document(like_collection_id, "unique()", like)
+        result = database.delete_document(like_collection_id, like_id)
     except:
         obj = {
-            "error": "error while creating document",
+            "error": "error while deleting document",
             "statusCode": 500
         }
         return res.json(obj)
 
-    result["statusCode"] = 201
+    answer = {
+        "statusCode": 204
+    }
 
-    return res.json(result)
+    return res.json(answer)
