@@ -1,6 +1,7 @@
 import json
 import os
 import uuid
+from PIL import Image
 from urllib.request import urlopen
 from appwrite.client import Client
 from appwrite.services.database import Database
@@ -52,6 +53,29 @@ def main(req, res):
     except:
         obj = {
             "error": "error while writing image file",
+            "statusCode": 500
+        }
+        return res.json(obj)
+
+    # check if png file has correct dimensions
+    image_size = 32
+    try:
+        im = Image.open(file_name)
+        if im.size[0] != image_size or im.size[1] != image_size:
+            obj = {
+            "error": "image dimensions are not 32x32",
+            "statusCode": 400
+            }
+
+            try:
+                os.remove(file_name)
+            except:
+                pass
+
+            return res.json(obj)
+    except:
+        obj = {
+            "error": "error while opening image file",
             "statusCode": 500
         }
         return res.json(obj)
