@@ -2,18 +2,15 @@ import json
 from urllib.request import urlopen
 from appwrite.client import Client
 from appwrite.services.database import Database
-from appwrite.services.storage import Storage
 
 def main(req, res):
     client = Client()
 
     database = Database(client)
-    storage = Storage(client)
 
     user_id = req.env.get('APPWRITE_FUNCTION_USER_ID', None)
     
-    bucket_id = req.env.get('APPWRITE_BUCKET_ID', None)
-    post_collection_id = req.env.get('POSTS_COLLECTION_ID')
+    comment_collection_id = req.env.get('COMMENTS_COLLECTION_ID')
     
     (
     client
@@ -23,11 +20,11 @@ def main(req, res):
     )
     
     payload = json.loads(req.payload)
-    post_id = payload["post_id"]
+    comment_id = payload["comment_id"]
 
-    if not post_id:
+    if not comment_id:
         obj = {
-            "error": "post_id should not be empty",
+            "error": "comment_id should not be empty",
             "statusCode": 400
         }
         return res.json(obj)
@@ -35,7 +32,7 @@ def main(req, res):
 
 
     try:
-        post = database.get_document(post_collection_id, post_id)
+        comment = database.get_document(comment_collection_id, comment_id)
     except:
         obj = {
             "error": "error while getting document from database",
@@ -43,13 +40,12 @@ def main(req, res):
         }
         return res.json(obj)
 
-    author_id = post["user_id"]
-    image_id = post["image_id"]
+    author_id = comment["user_id"]
 
-    # check if user is the author of the post
+    # check if user is the author of the comment
     if author_id != user_id:
         obj = {
-            "error": "user_id is not same as post author id",
+            "error": "user_id is not same as comment author id",
             "statusCode": 400
         }
         return res.json(obj)
@@ -57,7 +53,7 @@ def main(req, res):
 
 
     try:
-        result = database.delete_document(post_collection_id, post_id)
+        result = database.delete_document(comment_collection_id, comment_id)
     except:
         obj = {
             "error": "error while deleting document from database",
@@ -65,14 +61,7 @@ def main(req, res):
         }
         return res.json(obj)
 
-    try:
-        result = storage.delete_file(bucket_id, image_id)
-    except:
-        obj = {
-            "error": "error while deleting file from bucket",
-            "statusCode": 500
-        }
-        return res.json(obj)
+
 
     answer = {
         "statusCode": 204
