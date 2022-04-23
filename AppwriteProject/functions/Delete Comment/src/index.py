@@ -1,5 +1,4 @@
 import json
-from urllib.request import urlopen
 from appwrite.client import Client
 from appwrite.services.database import Database
 

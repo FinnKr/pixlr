@@ -1,10 +1,13 @@
 <script src="https://cdn.jsdelivr.net/npm/appwrite@7.0.0"></script>
 
-<button onclick="register()">Register Finn</button>
-<button onclick="createPost()">Create Post</button>
-<button onclick="login()">Login Finnus</button>
-<button onclick="createCommentCall()">Create Comment</button>
+<button onclick="registerFinn()">Register Finn</button>
+<button onclick="registerEmil()">Register Emil</button>
+<button onclick="loginFinn()">Login Finnus</button>
+<button onclick="loginEmil()">Login Emilus</button>
 <button onclick="createPostCall()">Create Post</button>
+<button onclick="createCommentCall()">Create Comment</button>
+<button onclick="deletePostCall()">Delete Post</button>
+<button onclick="deleteCommentCall()">Delete Comment</button>
 
 <script>
     // Init your Web SDK
@@ -14,7 +17,7 @@
         .setProject('pixlr') // Your project ID
         ;
 
-    function register() {
+    function registerFinn() {
         // Register User
         sdk
             .account.create('unique()', 'finn@finn.de', 'password', 'Finnus')
@@ -25,8 +28,29 @@
             });
     }
 
-    function login() {
+    function registerEmil() {
+        // Register User
+        sdk
+            .account.create('unique()', 'emil@emil.de', 'password', 'Emilus')
+            .then(response => {
+                console.log(response);
+            }, error => {
+                console.log(error);
+            });
+    }
+
+    function loginFinn() {
         let promise = sdk.account.createSession('finn@finn.de', 'password');
+
+        promise.then(function (response) {
+            console.log(response); // Success
+        }, function (error) {
+            console.log(error); // Failure
+        });
+    }
+
+    function loginEmil() {
+        let promise = sdk.account.createSession('emil@emil.de', 'password');
 
         promise.then(function (response) {
             console.log(response); // Success
@@ -56,13 +80,53 @@
 
     async function createPostCall() {
         let data = {
-            title: "Test Titel2",
-            image64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsIAAA7CARUoSoAAAAMoSURBVFhHxZdNSFRRFMfPnQknxQSV1Ahm0aAQphjBgLWIFoJjECUkOlMwbmqhmyIialG0CIOIAl0UREXah32gG5PcSNSi0cLAILLaTOoIlg5pkzOMrzn3nfd878198+bD8AeXOefMx/3fc8899w2TEsAGYqPXDUPNwMz7GQh0j8HS3BJ/w0hheSHUeGvA1bCDIusDF4CTv+l6C9HlKIVTs55i2PT4tJTJ5FrWQwh75n0uRRYi5MpUNVWCu9NNHsBk/yeYuDdBnh57nh3aBlottxARCWYPPL3qKTBOLEIkxrnPCaGJUFpZRMHuDrcqwt5c2XyJWwk8Nz1kycRGX8Nvrx/+3rkPrKgINlXvhLLqMqj11UJsOQbzn+f558LBMMRjcW5bIcUlmP0wCwWlBVDiKtZnoP5UvS49i3sPwGrwB7eZwwHFXye5jcSjcXh0+DF5a4iyKMqasnU2NBQCPQGyZBy+VrISyldWyJLRfk8Bf1C0hbtaquHYkA/q/HUUkReA2LAoFDD4beQ7eQD5HSch/9wZbm8+3sZfzcCVi0RpQSFGbBg0ZuHL0BR5soiS4BQUXLlMERmsei3alWPt4PbhWHn6gqJieCs2ZiHQHYDepj4YaB/UZURBaVxmLJ+/yGsHx5+zFygqRm3Fqc56OuAeK0R6bkGk6xq3WWIUJzKogAtTwO+olxFuBRaRq8FFkcww1g5uGw7t5MZtQ0yv43QywuyMn2sE60jbYIyI7hvMQE7PA2YitS3XrEUr/SInAUg2taNtVsIHksB4GFr9k3wMj/ykqBisHW2DscLYKdUM4KTXu4MQmtN3PC0V5Q7w+7ZBY0MpRZIxy4ioRSPs3diiZDWxGSjIe7QcDh3cSpHMYUfaPkq/FmLk5kY6GTLC9jeO64oQV3O600neGg/7Q3D77jR51qQrRidg9OUesqyJRld5zQyPyM8EZlgJUQXU1W6BG1ereDAbUmUoL8/GsyoSoQpI9aFMEYnB3381uJu8NZJqAMmmmNI5xqItZn1PZqVMiitbzIrb5m2pgBPt28n9P5hNjiTdBZkeNyOpJhOR82WUKxv87xjgH9simFtOMRQkAAAAAElFTkSuQmCC"
+            title: "Test Richtig",
+            image64: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAmUlEQVRYR+2U0QrAIAhF6/8/ehEsEFFbmriHu7eNyOPZ1d6Kn15cvwEABn5r4HmnIx2QF1iF+XSmgUgAUrEJRr/zd/c64ZfOi7RuadE0AEv1DsCVmxOtGgDNzXFWogCurmlgIgDrnuOubwNYwd1Ox9cpoKq59tBEaIvI2g/STnBb0JZO2Sbc/rPbB0IJvgEDABiAARiAgXIDA8+lIyGuoOHuAAAAAElFTkSuQmCC"
         }
 
         let response;
         try {
             response = await sdk.functions.createExecution('create_post', JSON.stringify(data), false);
+        } catch (err) {
+            console.error(err);
+        }
+
+        response = JSON.parse(response.stdout);
+        console.log("status: "+ response.statusCode);
+        if (response.statusCode > 299 || response.statusCode < 200) {
+            console.error(response.error);
+        }
+        console.log(response);
+    }
+
+    async function deletePostCall() {
+        let data = {
+            post_id: "62603dbed9de42aff41c"
+        }
+
+        let response;
+        try {
+            response = await sdk.functions.createExecution('delete_post', JSON.stringify(data), false);
+        } catch (err) {
+            console.error(err);
+        }
+
+        response = JSON.parse(response.stdout);
+        console.log("status: "+ response.statusCode);
+        if (response.statusCode > 299 || response.statusCode < 200) {
+            console.error(response.error);
+        }
+        console.log(response);
+    }
+
+    async function deleteCommentCall() {
+        let data = {
+            comment_id: "6264401784e9b43a5eda"
+        }
+
+        let response;
+        try {
+            response = await sdk.functions.createExecution('delete_comment', JSON.stringify(data), false);
         } catch (err) {
             console.error(err);
         }
