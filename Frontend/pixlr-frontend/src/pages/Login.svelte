@@ -20,41 +20,37 @@
     }
 </script>
 
-<div class="columns is-centered pt-5">
-    <div class="column is-half">
-        <div class="field">
-            <label for="mail" class="label">E-Mail</label>
-            <div class="control has-icons-left has-icons-right">
-                <input bind:value={mail} id="mail" class="input" type="email" placeholder="E-Mail" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-envelope" />
-                </span>
-            </div>
-        </div>
+<div class="field">
+    <label for="mail" class="label">E-Mail</label>
+    <div class="control has-icons-left has-icons-right">
+        <input bind:value={mail} id="mail" class="input" type="email" placeholder="E-Mail" />
+        <span class="icon is-small is-left">
+            <i class="fas fa-envelope" />
+        </span>
+    </div>
+</div>
 
-        <div class="field">
-            <label for="password" class="label">Password</label>
-            <div class="control has-icons-left has-icons-right">
-                <input bind:value={password} id="password" class="input" type="password" placeholder="Password" />
-                <span class="icon is-small is-left">
-                    <i class="fas fa-key" />
-                </span>
-            </div>
-        </div>
+<div class="field">
+    <label for="password" class="label">Password</label>
+    <div class="control has-icons-left has-icons-right">
+        <input bind:value={password} id="password" class="input" type="password" placeholder="Password" />
+        <span class="icon is-small is-left">
+            <i class="fas fa-key" />
+        </span>
+    </div>
+</div>
 
-        <!--div class="field">
-            <div class="control">
-                <label class="checkbox">
-                    <input type="checkbox" />
-                    I agree to the <a href="/">terms and conditions</a>
-                </label>
-            </div>
-        </div-->
+<!--div class="field">
+    <div class="control">
+        <label class="checkbox">
+            <input type="checkbox" />
+            I agree to the <a href="/">terms and conditions</a>
+        </label>
+    </div>
+</div-->
 
-        <div class="field">
-            <div class="control">
-                <button on:click="{login}" class="button {is_valid ? 'is-success' : ''}" disabled={!is_valid}>Submit</button>
-            </div>
-        </div>
+<div class="field">
+    <div class="control">
+        <button on:click="{login}" class="button {is_valid ? 'is-success' : ''}" disabled={!is_valid}>Submit</button>
     </div>
 </div>
