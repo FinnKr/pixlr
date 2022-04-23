@@ -22,7 +22,8 @@
     "svelte-check": "^2.0.0",
     "svelte-preprocess": "^4.0.0",
     "tslib": "^2.0.0",
-    "typescript": "^4.0.0"
+    "typescript": "^4.0.0",
+    "uuid": "^8.3.2"
   },
   "dependencies": {
     "appwrite": "^7.0.0",
