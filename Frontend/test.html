@@ -8,6 +8,7 @@
 <button onclick="createCommentCall()">Create Comment</button>
 <button onclick="deletePostCall()">Delete Post</button>
 <button onclick="deleteCommentCall()">Delete Comment</button>
+<button onclick="likePostCall()">Like Post</button>
 
 <script>
     // Init your Web SDK
@@ -127,6 +128,26 @@
         let response;
         try {
             response = await sdk.functions.createExecution('delete_comment', JSON.stringify(data), false);
+        } catch (err) {
+            console.error(err);
+        }
+
+        response = JSON.parse(response.stdout);
+        console.log("status: "+ response.statusCode);
+        if (response.statusCode > 299 || response.statusCode < 200) {
+            console.error(response.error);
+        }
+        console.log(response);
+    }
+
+    async function likePostCall() {
+        let data = {
+            post_id: "62643b40c71d728187fa"
+        }
+
+        let response;
+        try {
+            response = await sdk.functions.createExecution('like_post', JSON.stringify(data), false);
         } catch (err) {
             console.error(err);
         }
