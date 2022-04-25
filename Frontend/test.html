@@ -13,6 +13,7 @@
 <button onclick="deleteCommentCall()">Delete Comment</button>
 <button onclick="likePostCall()">Like Post</button>
 <button onclick="unlikePostCall()">Unlike Post</button>
+<button onclick="testFunction()">TEST FUNCTION</button>
 
 <div style="border: 2px solid black;margin:auto;margin-top:20px;max-width: fit-content;">
     <canvas onmousemove="drawPixel(event)" id="drawCanvas" width="320px" height="320px" onmousedown="editorMouseDown()">
@@ -80,6 +81,26 @@
         .setEndpoint('https://appwrite.berlin-fn.de/v1') // Your Appwrite Endpoint
         .setProject('pixlr') // Your project ID
         ;
+
+
+
+    // TEST ABSCHNITT:
+
+    sdk.subscribe("collections.posts.documents", response => {
+        // Callback will be executed on all account events.
+        callbackFunction(response);
+    });
+
+    function callbackFunction(res) {
+        console.log(res);
+    }
+
+    function testFunction() {
+        let result = sdk.avatars.getInitials("");
+        console.log(result);
+    }
+
+
 
     function registerFinn() {
         // Register User
@@ -205,7 +226,7 @@
 
     async function likePostCall() {
         let data = {
-            post_id: "626471356d7d044dc8cd"
+            post_id: "6266f9222e6d4b762a84"
         }
 
         let response;
