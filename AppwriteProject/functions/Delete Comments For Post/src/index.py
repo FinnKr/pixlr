@@ -19,7 +19,7 @@ def main(req, res):
 
     database = Database(client)
 
-    like_collection_id = req.env.get("LIKE_COLLECTION_ID")
+    comment_collection_id = req.env.get("COMMENT_COLLECTION_ID")
 
     (
         client.set_endpoint(req.env.get("APPWRITE_FUNCTION_ENDPOINT", None))
@@ -27,10 +27,10 @@ def main(req, res):
         .set_key(req.env.get("APPWRITE_FUNCTION_API_KEY", None))
     )
 
-    # Get all likes for that post
+    # Get all comments for that post
     try:
-        likes = database.list_documents(
-            like_collection_id, [Query.equal("post_id", post_id)]
+        comments = database.list_documents(
+            comment_collection_id, [Query.equal("post_id", post_id)]
         )
     except:
         obj = {
@@ -39,22 +39,22 @@ def main(req, res):
         }
         return res.json(obj)
 
-    likes_total = likes["total"]
-    if likes_total == 0:
-        obj = {"error": "no likes for that document found", "statusCode": 400}
+    comments_total = comments["total"]
+    if comments_total == 0:
+        obj = {"error": "no comments for that document found", "statusCode": 400}
         return res.json(obj)
 
     query_size = 25  # number of documents to delete on one go
     status = 0  # status for tracking deletion of documents
 
     # calculate how many iterations we need for deleting all documents
-    iterations = (likes_total // query_size) + 1
+    iterations = (comments_total // query_size) + 1
 
     # get documents of database in chunks of query_size
     for i in range(iterations):
         try:
-            like_query = database.list_documents(
-                like_collection_id,
+            comment_query = database.list_documents(
+                comment_collection_id,
                 [Query.equal("post_id", post_id)],
                 limit=query_size
             )
@@ -67,13 +67,13 @@ def main(req, res):
 
         # on last iterations, less documents need to be deleted
         if i == iterations - 1:
-            query_size = likes_total % query_size
+            query_size = comments_total % query_size
 
         # delete these {query_size} documents:
         for k in range(query_size):
             try:
-                like_id = like_query["documents"][k]["$id"]
-                database.delete_document(like_collection_id, like_id)
+                comment_id = comment_query["documents"][k]["$id"]
+                database.delete_document(comment_collection_id, comment_id)
             except:
                 status += 1
 
