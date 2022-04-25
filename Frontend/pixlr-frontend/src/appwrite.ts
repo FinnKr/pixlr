@@ -3,6 +3,7 @@ import { Appwrite } from "appwrite";
 const collections = {
     posts: "posts",
     comments: "comments",
+    likes: "likes"
 };
 
 const buckets = {
@@ -16,4 +17,13 @@ sdk
     .setProject('pixlr')
 ;
 
-export { sdk, collections, buckets };
+async function isLoggedIn(): Promise<boolean> {
+    try {
+        await sdk.account.get();
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+export { sdk, collections, buckets, isLoggedIn };

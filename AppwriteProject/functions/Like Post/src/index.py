@@ -52,14 +52,13 @@ def main(req, res):
 
     # verify that the post exists
     try:
-        post = database.get_document(post_collection_id, post_id)
+        database.get_document(post_collection_id, post_id)
     except:
         obj = {
             "error": "post does not exist",
             "statusCode": 400
         }
         return res.json(obj)
-
     
     like = {
         "user_id": user_id,

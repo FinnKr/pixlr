@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Link, Router } from "svelte-routing";
+  import { Link, navigate, Router } from "svelte-routing";
   import { sdk } from "../appwrite";
   import type { Models } from "appwrite";
 
@@ -15,6 +15,17 @@
       logged_in = true;
     } catch{}
   });
+
+  async function logout() {
+    try {
+      await sdk.account.deleteSession('current');
+    } catch (error) {
+      console.log("Error logging out");
+    }
+    account = undefined;
+    logged_in = false;
+    navigate("/login");
+  }
 </script>
 
 <nav class="navbar" aria-label="main navigation">
@@ -70,9 +81,15 @@
                 <strong>Create Post</strong>
               </Link>
             {/if}
+            <button on:click={logout} class="button is-outlined is-success has-icons has-icons-right">
+              <p>Log Out</p>
+              <span class="icon is-small is-right">
+                <i class="fas fa-arrow-right-from-bracket" />
+              </span>
+            </button>
             <Link to="/profile" class="button is-rounded has-text-weight-semibold  {url == '/profile' ? 'is-active' : ''}">{account.name.substring(0,1)}</Link>
           {:else}
-            <Link to="/" class="button is-success">
+            <Link to="/signup" class="button is-success">
               <strong>Sign up</strong>
             </Link>
             <Link to="/login" class="button is-light  {url == '/login' ? 'has-text-weight-semibold' : ''}">Log in</Link>
