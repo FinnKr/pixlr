@@ -2,7 +2,7 @@
   "name": "svelte-app",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://finnkr.github.io/pixlr/",
+  "homepage": "https://pixlr.social/",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
