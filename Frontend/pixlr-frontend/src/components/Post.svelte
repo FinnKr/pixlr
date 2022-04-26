@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import { sdk, collections, buckets } from "../appwrite";
     import { Models, Query } from "appwrite";
+    import { Link } from 'svelte-routing';
 
     export let id: string;
     export let is_logged_in: boolean;
@@ -22,6 +23,8 @@
     let loading: boolean = true;
 
     let liking_process: boolean = false;
+
+    let showNotLoggedInModal: boolean = false;
 
     onMount(async () => {
         post = (await sdk.database.getDocument(
@@ -113,6 +116,8 @@
                 console.log("unliked");
                 unlike_post();
             }
+        } else {
+            showNotLoggedInModal = true;
         }
     }
 
@@ -145,6 +150,18 @@
         getLikes();
     }
 </script>
+
+{#if showNotLoggedInModal}
+    <div class="modal is-active">
+        <div on:click={()=>showNotLoggedInModal=false} class="modal-background"></div>
+        <div class="modal-content">
+            <div class="notification is-success">
+                You need to be <Link to="/login">logged in</Link> to like a post.
+            </div>
+        </div>
+        <button on:click={()=>showNotLoggedInModal=false} class="modal-close is-large" aria-label="close"></button>
+    </div>    
+{/if}
 
 {#if !loading}
     <div class="card block">
