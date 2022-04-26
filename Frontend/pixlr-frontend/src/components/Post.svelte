@@ -226,8 +226,9 @@
         comment_list = null;
         let comment_docs = [];
         let comments = [];
+        let queries = [Query.equal("post_id", post.$id)];
         try {
-            comment_docs = (await sdk.database.listDocuments(collections.comments, [], 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
+            comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
         } catch (error) {
             console.error(error);
         }
@@ -243,8 +244,9 @@
     async function loadMoreComments() {
         let comment_docs = [];
         let comments = [];
+        let queries = [Query.equal("post_id", post.$id)];
         try {
-            comment_docs = (await sdk.database.listDocuments(collections.comments, [], 10, comment_list.length, undefined,undefined,['$id'],['DESC'])).documents;
+            comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, comment_list.length, undefined,undefined,['$id'],['DESC'])).documents;
         } catch(error) {
             console.error(error);
         }
