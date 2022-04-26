@@ -27,7 +27,9 @@
             {#each posts as post (post.$id)}
                 <Post id={post.$id} is_logged_in={is_logged_in}/>
             {/each}
-            <p on:click={loadMore} class="load-more-btn">Load More</p>
+            {#if posts.length == 10}
+                <p on:click={loadMore} class="load-more-btn">Load More</p>
+            {/if}
         {/if}
     </main>
 {/if}

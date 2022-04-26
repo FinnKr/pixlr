@@ -8,7 +8,7 @@
 	import Navbar from "./components/Navbar.svelte";
 	import Profile from './pages/Profile.svelte';
 	import CreatePost from './pages/CreatePost.svelte';
-import Signup from './pages/Signup.svelte';
+	import Signup from './pages/Signup.svelte';
 
 	export let url = '';
 

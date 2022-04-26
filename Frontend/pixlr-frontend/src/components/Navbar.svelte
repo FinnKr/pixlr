@@ -9,6 +9,8 @@
   let account: Models.User<Models.Preferences>;
   let logged_in: boolean = false;
 
+  let showHamMenu: boolean = false;
+
   onMount(async () => {
     try {
       account = await sdk.account.get();
@@ -30,37 +32,37 @@
 
 <nav class="navbar" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
+    <Link class="navbar-item" to="/">
       <img
-        src="https://bulma.io/images/bulma-logo.png"
+        src="logo.png"
         width="112"
         height="28"
         alt="Pic"
       />
-    </a>
+    </Link>
 
-    <Link
-      to="/"
+    <span
       role="button"
-      class="navbar-burger"
+      class="navbar-burger {showHamMenu ? 'is-active' : ''}"
       aria-label="menu"
       aria-expanded="false"
-      data-target="navbarBasicExample"
+      data-target="navbarMain"
+      on:click={()=>showHamMenu=!showHamMenu}
     >
       <span aria-hidden="true" />
       <span aria-hidden="true" />
       <span aria-hidden="true" />
-    </Link>
+  </span>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div id="navbarMain" class="navbar-menu {showHamMenu ? 'is-active' : ''}">
     <div class="navbar-start">
       <Link to="/" class="navbar-item {url == '/' ? 'has-text-weight-semibold' : ''}">Home</Link>
 
       <Link to="/" class="navbar-item">News</Link>
 
       <div class="navbar-item has-dropdown is-hoverable">
-        <Link to="/" class="navbar-link">More</Link>
+        <span class="navbar-link">More</span>
 
         <div class="navbar-dropdown">
           <Link to="/about" class="navbar-item {url == '/about' ? 'has-text-weight-semibold' : ''}">About</Link>

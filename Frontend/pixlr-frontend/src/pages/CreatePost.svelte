@@ -128,7 +128,7 @@
         <ColorPicker bind:value={currentColor} />
     </div>
 
-    <div class="columns">
+    <div class="columns mt-2">
         <div class="column is-three-quarters">
             <label for="title_input" class="label">Title</label>
             <input
