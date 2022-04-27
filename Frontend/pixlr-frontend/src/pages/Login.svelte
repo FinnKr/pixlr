@@ -1,16 +1,21 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
+    import { fade } from 'svelte/transition';
     import { sdk } from "../appwrite";
     import { onMount } from "svelte";
 
     let mail: string = "";
     let password: string = "";
 
+    let show_error_message: boolean = false;
+
     let is_logging_in: boolean = false;
 
     let is_not_logged_in: boolean = false;
 
-    $: is_valid = mail && password;
+    let error_timeout_id: number;
+
+    $: is_valid = (mail && password) ? true : false;
 
     onMount(async () => {
         try {
@@ -28,7 +33,10 @@
                 is_logging_in = false;
                 window.location.href = "/profile";
             } catch (error) {
-                console.error("Wrong E-Mail or Password");
+                is_valid = false;
+                clearTimeout(error_timeout_id);
+                show_error_message = true;
+                error_timeout_id = window.setTimeout(async ()=>{show_error_message = false;}, 3000);
                 is_logging_in = false;
             }
         }
@@ -36,6 +44,12 @@
 </script>
 
 {#if is_not_logged_in}
+    {#if show_error_message}
+        <div out:fade class="notification is-danger has-text-centered p-2 is-size-6">
+            Login failed with the given information. Make sure to enter a
+            correct E-Mail and Password.
+        </div>
+    {/if}
     <div class="field">
         <label for="mail" class="label">E-Mail</label>
         <div class="control has-icons-left has-icons-right">

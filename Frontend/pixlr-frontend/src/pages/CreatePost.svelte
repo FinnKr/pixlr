@@ -54,6 +54,13 @@
 
     function getMousePos(canvas, evt): Position {
         let rect = canvas.getBoundingClientRect();
+        if (evt.type == "touchmove") {
+            var touch = evt.touches[0] || evt.changedTouches[0];
+            return {
+                x: touch.pageX - rect.left,
+                y: touch.pageY - rect.top,
+            };
+        }
         return {
             x: evt.clientX - rect.left,
             y: evt.clientY - rect.top,
@@ -61,7 +68,7 @@
     }
 
     async function drawPixel(event) {
-        if (mouseButtonDown) {
+        if (mouseButtonDown || (event.type == "touchmove")) {
             let pos: Position = getMousePos(editorCanvas, event);
             let pixel: Position = {
                 x: pos.x == 0 ? 0 : Math.ceil(pos.x / 10 - 1),
@@ -114,13 +121,18 @@
 
 {#if account}
     <h1 class="title">Create Post</h1>
-    <div class="is-flex">
-        <div class="editorContainer mr-2">
+    <div class="is-flex editor-full-container-mobile">
+        <div class="editorContainer mr-2 mobile-mb-2">
             <canvas
                 use:setEditorContext
                 bind:this={editorCanvas}
                 on:mousemove={(event) => drawPixel(event)}
-                on:mousedown={(event) => {mouseDown();drawPixel(event)}}
+                on:touchmove|preventDefault={(event) => drawPixel(event)}
+                on:mousedown={(event) => {
+                    mouseDown();
+                    drawPixel(event);
+                    console.log("down")
+                }}
                 width="320px"
                 height="320px"
             />
@@ -143,7 +155,9 @@
     </div>
     <button
         on:click={createPost}
-        class="button {is_valid ? 'is-success' : ''} {is_creating ? 'is-loading' : ''}"
+        class="button {is_valid ? 'is-success' : ''} {is_creating
+            ? 'is-loading'
+            : ''}"
         disabled={!is_valid}>Create</button
     >
 
@@ -163,5 +177,14 @@
         border: 2px solid black;
         width: 324px;
         height: 324px;
+    }
+
+    @media only screen and (max-width: 768px){
+        .editor-full-container-mobile {
+            flex-wrap: wrap;
+        }
+        .mobile-mb-2 {
+            margin-bottom: 1rem;
+        }
     }
 </style>

@@ -29,7 +29,7 @@
 <Router url={url}>
 	<Navbar url={pathname}/>
 	<div class="container pt-2">
-		<div class="columns is-centered pt-5">
+		<div id="content-container" class="columns is-centered pt-5 mx-0">
 			<div class="column is-half">
 				<Route path="/"><Home /></Route>
 				<Route path="about" component="{About}" />
@@ -41,4 +41,3 @@
 		</div>
 	</div>
 </Router>
-
