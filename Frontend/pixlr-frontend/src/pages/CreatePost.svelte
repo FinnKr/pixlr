@@ -55,10 +55,10 @@
     function getMousePos(canvas, evt): Position {
         let rect = canvas.getBoundingClientRect();
         if (evt.type == "touchmove") {
-            var touch = evt.touches[0] || evt.changedTouches[0];
+            let touch = evt.touches[0] || evt.changedTouches[0];
             return {
-                x: touch.pageX - rect.left,
-                y: touch.pageY - rect.top,
+                x: touch.clientX - rect.left,
+                y: touch.clientY - rect.top,
             };
         }
         return {
@@ -66,7 +66,7 @@
             y: evt.clientY - rect.top,
         };
     }
-
+    
     async function drawPixel(event) {
         if (mouseButtonDown || (event.type == "touchmove")) {
             let pos: Position = getMousePos(editorCanvas, event);
@@ -146,7 +146,7 @@
             <input
                 bind:value={post_title}
                 id="title_input"
-                class="input"
+                class="input mobile-sm-w"
                 type="text"
                 placeholder="Title"
                 maxlength="100"
@@ -185,6 +185,9 @@
         }
         .mobile-mb-2 {
             margin-bottom: 1rem;
+        }
+        .mobile-sm-w {
+            width: 340px;
         }
     }
 </style>
