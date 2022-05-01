@@ -9,6 +9,7 @@
 	import Profile from './pages/Profile.svelte';
 	import CreatePost from './pages/CreatePost.svelte';
 	import Signup from './pages/Signup.svelte';
+	import News from './pages/News.svelte';
 
 	export let url = '';
 
@@ -37,6 +38,7 @@
 				<Route path="profile" component="{Profile}" />
 				<Route path="create-post" component="{CreatePost}" />
 				<Route path="signup" component="{Signup}" />
+				<Route path="news" component="{News}" />
 			</div>
 		</div>
 	</div>

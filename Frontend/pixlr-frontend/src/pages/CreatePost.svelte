@@ -31,7 +31,6 @@
         try {
             account = await sdk.account.get();
         } catch (error) {
-            console.log(error);
             navigate("/login");
         }
     });
@@ -104,13 +103,11 @@
                     JSON.stringify(data),
                     false
                 );
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) {}
 
             response = JSON.parse(response.stdout);
             if (response.statusCode > 299 || response.statusCode < 200) {
-                console.error(response.error);
+                //error
             }
             navigate("/profile");
         }
@@ -131,7 +128,6 @@
                 on:mousedown={(event) => {
                     mouseDown();
                     drawPixel(event);
-                    console.log("down")
                 }}
                 width="320px"
                 height="320px"

@@ -32,9 +32,7 @@
             let queries = [Query.equal("user_id", account.$id)];
             try {
                 posts = (await sdk.database.listDocuments(collections.posts, queries, 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (error) {}
         }
     }
 

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Link, navigate, Router } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import { sdk } from "../appwrite";
+  import { clickOutside } from "../scripts/clickOutside";
   import type { Models } from "appwrite";
 
   export let url: string;
@@ -10,6 +11,7 @@
   let logged_in: boolean = false;
 
   let showHamMenu: boolean = false;
+  let showMoreMenu: boolean = false;
 
   onMount(async () => {
     try {
@@ -21,12 +23,14 @@
   async function logout() {
     try {
       await sdk.account.deleteSession('current');
-    } catch (error) {
-      console.log("Error logging out");
-    }
+    } catch (error) {}
     account = undefined;
     logged_in = false;
     navigate("/login");
+  }
+
+  async function clickOutsideMoreMenu() {
+    showMoreMenu = false;
   }
 </script>
 
@@ -59,9 +63,9 @@
     <div class="navbar-start">
       <Link to="/" class="navbar-item {url == '/' ? 'has-text-weight-semibold' : ''}">Home</Link>
 
-      <Link to="/" class="navbar-item">News</Link>
+      <Link to="/news" class="navbar-item">News</Link>
 
-      <div class="navbar-item has-dropdown is-hoverable">
+      <div use:clickOutside on:click_outside={clickOutsideMoreMenu} on:click={()=> showMoreMenu = !showMoreMenu} class="navbar-item has-dropdown {showMoreMenu ? 'is-active' : ''}">
         <span class="navbar-link">More</span>
 
         <div class="navbar-dropdown">
@@ -69,7 +73,7 @@
           <Link to="/" class="navbar-item">Donate</Link>
           <hr class="navbar-divider" />
           <a href="https://github.com/FinnKr/pixlr" class="navbar-item">GitHub Repository</a>
-          <Link to="/" class="navbar-item">Report an issue</Link>
+          <a href="https://github.com/FinnKr/pixlr/issues" class="navbar-item">Report an issue</a>
         </div>
       </div>
     </div>

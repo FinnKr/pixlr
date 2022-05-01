@@ -61,7 +61,6 @@
     } fa-heart fa-2x" style="${is_liked ? "color: #d62828;" : ""}"/>`;
 
     async function checkLikeStatus() {
-        console.log("Checked Status");
         if (is_logged_in) {
             let account: Models.User<Models.Preferences>;
             try {
@@ -100,8 +99,6 @@
     async function like_post() {
         if (is_logged_in) {
             if (!is_liked) {
-                console.log("Liked");
-
                 like_count++;
                 is_liked = true;
 
@@ -118,22 +115,18 @@
                             JSON.stringify(data),
                             false
                         );
-                    } catch (err) {
-                        console.error(err);
-                    }
+                    } catch (err) {}
 
                     response = JSON.parse(response.stdout);
                     if (
                         response.statusCode > 299 ||
                         response.statusCode < 200
-                    ) {
-                        console.error(response.error);
+                    ) {//error
                     }
                     liking_process = false;
                 }
                 getLikes();
             } else {
-                console.log("unliked");
                 unlike_post();
             }
         } else {
@@ -157,13 +150,11 @@
                     JSON.stringify(data),
                     false
                 );
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) {}
 
             response = JSON.parse(response.stdout);
             if (response.statusCode > 299 || response.statusCode < 200) {
-                console.error(response.error);
+                //error
             }
             liking_process = false;
         }
@@ -207,13 +198,11 @@
                     JSON.stringify(data),
                     false
                 );
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (error) {}
 
             response = JSON.parse(response.stdout);
             if (response.statusCode > 299 || response.statusCode < 200) {
-                console.error(response.error);
+                //error
             }
             fetchComments();
             getCommentCount();
@@ -229,9 +218,7 @@
         let queries = [Query.equal("post_id", post.$id)];
         try {
             comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
-        } catch (error) {
-            console.error(error);
-        }
+        } catch (error) {}
         for (let comment_doc of comment_docs){
             try {
                 let comment = (await sdk.database.getDocument(collections.comments, comment_doc.$id));
@@ -247,9 +234,7 @@
         let queries = [Query.equal("post_id", post.$id)];
         try {
             comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, comment_list.length, undefined,undefined,['$id'],['DESC'])).documents;
-        } catch(error) {
-            console.error(error);
-        }
+        } catch(error) {}
         for (let comment_doc of comment_docs){
             try {
                 let comment = (await sdk.database.getDocument(collections.comments, comment_doc.$id));
@@ -272,13 +257,11 @@
                     JSON.stringify(data),
                     false
                 );
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (error) {}
 
             response = JSON.parse(response.stdout);
             if (response.statusCode > 299 || response.statusCode < 200) {
-                console.error(response.error);
+                //error
             }
             window.location.reload();
         }
