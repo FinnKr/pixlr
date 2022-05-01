@@ -3,7 +3,8 @@ import { Appwrite } from "appwrite";
 const collections = {
     posts: "posts",
     comments: "comments",
-    likes: "likes"
+    likes: "likes",
+    news: "news"
 };
 
 const buckets = {
