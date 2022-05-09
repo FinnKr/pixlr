@@ -1,6 +1,6 @@
 <script lang="ts">
     import { navigate } from "svelte-routing";
-    import { fade } from 'svelte/transition';
+    import { fade } from "svelte/transition";
     import { sdk } from "../appwrite";
     import { onMount } from "svelte";
 
@@ -15,7 +15,7 @@
 
     let error_timeout_id: number;
 
-    $: is_valid = (mail && password) ? true : false;
+    $: is_valid = mail && password ? true : false;
 
     onMount(async () => {
         try {
@@ -36,7 +36,9 @@
                 is_valid = false;
                 clearTimeout(error_timeout_id);
                 show_error_message = true;
-                error_timeout_id = window.setTimeout(async ()=>{show_error_message = false;}, 3000);
+                error_timeout_id = window.setTimeout(async () => {
+                    show_error_message = false;
+                }, 3000);
                 is_logging_in = false;
             }
         }
@@ -45,7 +47,10 @@
 
 {#if is_not_logged_in}
     {#if show_error_message}
-        <div out:fade class="notification is-danger has-text-centered p-2 is-size-6">
+        <div
+            out:fade
+            class="notification is-danger has-text-centered p-2 is-size-6"
+        >
             Login failed with the given information. Make sure to enter a
             correct E-Mail and Password.
         </div>

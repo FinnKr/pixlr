@@ -31,14 +31,38 @@
         if (account) {
             let queries = [Query.equal("user_id", account.$id)];
             try {
-                posts = (await sdk.database.listDocuments(collections.posts, queries, 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
+                posts = (
+                    await sdk.database.listDocuments(
+                        collections.posts,
+                        queries,
+                        10,
+                        0,
+                        undefined,
+                        undefined,
+                        ["$id"],
+                        ["DESC"]
+                    )
+                ).documents;
             } catch (error) {}
         }
     }
 
     async function loadMore() {
         let queries = [Query.equal("user_id", account.$id)];
-        posts = posts.concat((await sdk.database.listDocuments(collections.posts, queries, 10, posts.length, undefined,undefined,['$id'],['DESC'])).documents);
+        posts = posts.concat(
+            (
+                await sdk.database.listDocuments(
+                    collections.posts,
+                    queries,
+                    10,
+                    posts.length,
+                    undefined,
+                    undefined,
+                    ["$id"],
+                    ["DESC"]
+                )
+            ).documents
+        );
     }
 </script>
 
@@ -48,7 +72,13 @@
         {#each posts as post (post.$id)}
             <Post id={post.$id} is_logged_in={true} can_delete={true} />
         {:else}
-            <p><i>No posts created. Create one <Link to="/create-post">here</Link></i></p>
+            <p>
+                <i
+                    >No posts created. Create one <Link to="/create-post"
+                        >here</Link
+                    ></i
+                >
+            </p>
         {/each}
         {#if posts.length == 10}
             <p on:click={loadMore} class="load-more-btn">Load More</p>

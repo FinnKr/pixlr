@@ -16,7 +16,7 @@ const sdk = new Appwrite();
 sdk
     .setEndpoint('https://appwrite.berlin-fn.de/v1')
     .setProject('pixlr')
-;
+    ;
 
 async function isLoggedIn(): Promise<boolean> {
     try {

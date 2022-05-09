@@ -65,9 +65,9 @@
             y: evt.clientY - rect.top,
         };
     }
-    
+
     async function drawPixel(event) {
-        if (mouseButtonDown || (event.type == "touchmove")) {
+        if (mouseButtonDown || event.type == "touchmove") {
             let pos: Position = getMousePos(editorCanvas, event);
             let pixel: Position = {
                 x: pos.x == 0 ? 0 : Math.ceil(pos.x / 10 - 1),
@@ -175,7 +175,7 @@
         height: 324px;
     }
 
-    @media only screen and (max-width: 768px){
+    @media only screen and (max-width: 768px) {
         .editor-full-container-mobile {
             flex-wrap: wrap;
         }

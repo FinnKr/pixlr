@@ -1,5 +1,4 @@
 <script lang="ts">
-
     export let comment_list;
 </script>
 
@@ -16,6 +15,6 @@
         padding: 0.5rem !important;
     }
     .comment-box:not(:last-child) {
-        margin-bottom: 1rem !important;        
+        margin-bottom: 1rem !important;
     }
 </style>

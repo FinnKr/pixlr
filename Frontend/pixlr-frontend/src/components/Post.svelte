@@ -121,7 +121,8 @@
                     if (
                         response.statusCode > 299 ||
                         response.statusCode < 200
-                    ) {//error
+                    ) {
+                        //error
                     }
                     liking_process = false;
                 }
@@ -191,7 +192,7 @@
             try {
                 let data = {
                     content: comment_content,
-                    post_id: post.$id 
+                    post_id: post.$id,
                 };
                 response = await sdk.functions.createExecution(
                     "create_comment",
@@ -206,7 +207,7 @@
             }
             fetchComments();
             getCommentCount();
-            comment_content = '';
+            comment_content = "";
         }
         is_commenting = false;
     }
@@ -217,11 +218,25 @@
         let comments = [];
         let queries = [Query.equal("post_id", post.$id)];
         try {
-            comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
+            comment_docs = (
+                await sdk.database.listDocuments(
+                    collections.comments,
+                    queries,
+                    10,
+                    0,
+                    undefined,
+                    undefined,
+                    ["$id"],
+                    ["DESC"]
+                )
+            ).documents;
         } catch (error) {}
-        for (let comment_doc of comment_docs){
+        for (let comment_doc of comment_docs) {
             try {
-                let comment = (await sdk.database.getDocument(collections.comments, comment_doc.$id));
+                let comment = await sdk.database.getDocument(
+                    collections.comments,
+                    comment_doc.$id
+                );
                 comments.push(comment);
             } catch (error) {}
         }
@@ -233,11 +248,25 @@
         let comments = [];
         let queries = [Query.equal("post_id", post.$id)];
         try {
-            comment_docs = (await sdk.database.listDocuments(collections.comments, queries, 10, comment_list.length, undefined,undefined,['$id'],['DESC'])).documents;
-        } catch(error) {}
-        for (let comment_doc of comment_docs){
+            comment_docs = (
+                await sdk.database.listDocuments(
+                    collections.comments,
+                    queries,
+                    10,
+                    comment_list.length,
+                    undefined,
+                    undefined,
+                    ["$id"],
+                    ["DESC"]
+                )
+            ).documents;
+        } catch (error) {}
+        for (let comment_doc of comment_docs) {
             try {
-                let comment = (await sdk.database.getDocument(collections.comments, comment_doc.$id));
+                let comment = await sdk.database.getDocument(
+                    collections.comments,
+                    comment_doc.$id
+                );
                 comments.push(comment);
             } catch (error) {}
         }
@@ -250,7 +279,7 @@
             let response;
             try {
                 let data = {
-                    post_id: post.$id
+                    post_id: post.$id,
                 };
                 response = await sdk.functions.createExecution(
                     "delete_post",
@@ -294,7 +323,12 @@
             <div class="notification is-danger has-text-centered">
                 <p>Do you really want to delete this post?</p>
                 <p class="mb-1">This cannot be undone!</p>
-                <button on:click={deletePost} class="button is-danger is-light {is_deleting ? 'is-loading' : ''}">Delete Post</button>
+                <button
+                    on:click={deletePost}
+                    class="button is-danger is-light {is_deleting
+                        ? 'is-loading'
+                        : ''}">Delete Post</button
+                >
             </div>
         </div>
         <button
@@ -311,20 +345,29 @@
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Comments</p>
-                <button on:click={hideModals} class="delete" aria-label="close" />
+                <button
+                    on:click={hideModals}
+                    class="delete"
+                    aria-label="close"
+                />
             </header>
             <section class="modal-card-body">
                 {#if comment_list != null}
                     {#if comment_list.length}
-                        <CommentSection comment_list={comment_list} />
+                        <CommentSection {comment_list} />
                         {#if comment_list.length == 10}
-                            <span on:click={loadMoreComments} class="load-more-btn"><i>Load More</i></span>
+                            <span
+                                on:click={loadMoreComments}
+                                class="load-more-btn"><i>Load More</i></span
+                            >
                         {/if}
                     {:else}
                         <p>No comments</p>
                     {/if}
                 {:else}
-                    <progress class="progress is-large is-success" max="100">0%</progress>
+                    <progress class="progress is-large is-success" max="100"
+                        >0%</progress
+                    >
                 {/if}
             </section>
             {#if is_logged_in}
@@ -363,9 +406,13 @@
                 {post.title}
             </p>
             {#if can_delete}
-            <span on:click={showDeleteWarningModalF} class="icon is-small is-large" style="cursor: pointer;">
-                <i class="das fa-solid fa-trash-can"></i>
-            </span>
+                <span
+                    on:click={showDeleteWarningModalF}
+                    class="icon is-small is-large"
+                    style="cursor: pointer;"
+                >
+                    <i class="das fa-solid fa-trash-can" />
+                </span>
             {/if}
         </header>
         <div class="card-image">

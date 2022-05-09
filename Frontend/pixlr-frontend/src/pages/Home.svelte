@@ -12,11 +12,35 @@
     onMount(async () => {
         is_logged_in = await isLoggedIn();
         is_loading = false;
-        posts = (await sdk.database.listDocuments(collections.posts, [], 10, 0, undefined, undefined, ['$id'],['DESC'])).documents;
+        posts = (
+            await sdk.database.listDocuments(
+                collections.posts,
+                [],
+                10,
+                0,
+                undefined,
+                undefined,
+                ["$id"],
+                ["DESC"]
+            )
+        ).documents;
     });
 
     async function loadMore() {
-        posts = posts.concat((await sdk.database.listDocuments(collections.posts, [], 10, posts.length, undefined,undefined,['$id'],['DESC'])).documents);
+        posts = posts.concat(
+            (
+                await sdk.database.listDocuments(
+                    collections.posts,
+                    [],
+                    10,
+                    posts.length,
+                    undefined,
+                    undefined,
+                    ["$id"],
+                    ["DESC"]
+                )
+            ).documents
+        );
     }
 </script>
 
@@ -25,7 +49,7 @@
         <h1 class="title">Global Feed</h1>
         {#if posts}
             {#each posts as post (post.$id)}
-                <Post id={post.$id} is_logged_in={is_logged_in}/>
+                <Post id={post.$id} {is_logged_in} />
             {/each}
             {#if posts.length == 10}
                 <p on:click={loadMore} class="load-more-btn">Load More</p>
