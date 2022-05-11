@@ -62,7 +62,11 @@
         >Home</Link
       >
 
-      <Link to="/news" class="navbar-item">News</Link>
+      <Link
+        to="/news"
+        class="navbar-item {url == '/news' ? 'has-text-weight-semibold' : ''}"
+        >News</Link
+      >
 
       <Link
         to="/about"
