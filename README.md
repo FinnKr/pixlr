@@ -11,6 +11,8 @@ users to give feedback on created art.
 
 Pixlr is using [Appwrite](https://appwrite.io/) as backend and [Svelte](https://svelte.dev/) and [Bulma](https://bulma.io/) as frontend.
 
+A small article about this project can be found at DEV.to [here](https://dev.to/emilmerle/pixlr-social-network-based-on-pixelart-using-appwrite-4dc).
+
 ## Getting Started
 
 ### Dependencies
@@ -21,7 +23,7 @@ Pixlr is using [Appwrite](https://appwrite.io/) as backend and [Svelte](https://
 
 * run `npm install` in the [Frontend/pixlr-frontend](https://github.com/FinnKr/pixlr/tree/master/Frontend/pixlr-frontend) folder.
 * run `npm run dev` to start a local webserver.
-* The Backend uses a configured appwrite installation. If you want to host your own Backend contact one of the authors.
+* The Backend uses a configured appwrite installation. If you want to host your own Backend have a look at the [DEV.to article](https://dev.to/emilmerle/pixlr-social-network-based-on-pixelart-using-appwrite-4dc) about this project.
 
 ## Authors
 
