@@ -3,7 +3,7 @@ from appwrite.client import Client
 # You can remove imports of services you don't use
 from appwrite.services.account import Account
 from appwrite.services.avatars import Avatars
-from appwrite.services.database import Database
+from appwrite.services.databases import Database
 from appwrite.services.functions import Functions
 from appwrite.services.health import Health
 from appwrite.services.locale import Locale
